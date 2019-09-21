@@ -3,13 +3,13 @@ package com.build38.fly.repository
 import com.build38.fly.model.amadeus.AmadeusOfferItem
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface AmadeusApi {
-    @GET("flight-offers?origin={origin}&destination={destination}&departureDate={departureDate}&returnDate={returnDate}")
-    fun getRoundTripFlights(@Path("origin") origin: String,
-                            @Path("destination") destination: String,
-                            @Path("departureDate") departureDate: String,
-                            @Path("returnDate") returnDate: String): Call<List<AmadeusOfferItem>>
+    @GET("flight-offers")
+    fun getRoundTripFlights(@Query("origin") origin: String,
+                            @Query("destination") destination: String,
+                            @Query("departureDate") departureDate: String,
+                            @Query("returnDate") returnDate: String): Call<List<AmadeusOfferItem>>
 
 }
