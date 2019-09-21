@@ -24,7 +24,7 @@ class Injector(private val context: Context) {
             addInterceptor { chain ->
                 val request = chain.request().newBuilder().apply {
                     addHeader("cache-control", "no-cache")
-                    addHeader("Authorization", "Bearer Y8qOVjzBoIV3Jx0aBgaVDkcc3Lli")
+                    addHeader("Authorization", "Bearer vHiJAowzbHiaxgX3RG7K9NhMgOrU")
                 }.build()
                 chain.proceed(request)
             }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import com.build38.fly.model.amadeus.AmadeusOfferItem
+import com.build38.fly.model.amadeus.AmadeusResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,13 +29,15 @@ class MainActivity : AppCompatActivity() {
             val amadeusApi = Injector(this).provideAmadeusApi()
             amadeusApi
                 .getRoundTripFlights("BCN", "MAD", "2019-10-01", "2019-11-01")
-                .enqueue(object : Callback<List<AmadeusOfferItem>> {
-                    override fun onResponse(call: Call<List<AmadeusOfferItem>>, response: Response<List<AmadeusOfferItem>>) {
+                .enqueue(object : Callback<AmadeusResponse> {
+                    override fun onResponse(call: Call<AmadeusResponse>, response: Response<AmadeusResponse>) {
                         Log.d(LOG_TAG, "I AM ALIVE")
                     }
 
-                    override fun onFailure(call: Call<List<AmadeusOfferItem>>, t: Throwable) {
+                    override fun onFailure(call: Call<AmadeusResponse>, t: Throwable) {
                         Log.d(LOG_TAG, ":((((((((((")
+                        Log.d(LOG_TAG, t.message)
+                        t.printStackTrace()
                     }
                 })
         }
