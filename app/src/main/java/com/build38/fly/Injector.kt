@@ -1,37 +1,42 @@
 package com.build38.fly
 
+import AmadeusSecurityApi
 import android.content.Context
-import com.build38.fly.repository.AmadeusApi
+import com.build38.fly.repository.AmadeusShoppingApi
+import com.build38.fly.repository.authentication.AccessTokenAuthenticator
+import com.build38.fly.repository.authentication.AccessTokenProviderImpl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class Injector(private val context: Context) {
 
-    private fun injectRetrofit(): Retrofit {
+    private fun injectAmadeusShoppingRetrofit(): Retrofit {
         return Retrofit.Builder().apply {
-            baseUrl(Constants.AMADEUS_BASE_URL)
+            baseUrl(Constants.AMADEUS_SHOPPING_BASE_URL)
             addConverterFactory(GsonConverterFactory.create())
-            client(injectOkHttpClient())
+            client(injectAuthenticatorOkHttpClient())
         }.build()
     }
 
-    //buildConfigField "String" "API_KEY" "\"QYlNY5V2OWQ4R2E1JfDD76PGHetJvT7N\""
-    //            buildConfigField "String" "API_SECRET" "\"2AMwnKeBumrIcuX6\""
-
-    private fun injectOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().apply {
-            addInterceptor { chain ->
-                val request = chain.request().newBuilder().apply {
-                    addHeader("cache-control", "no-cache")
-                    addHeader("Authorization", "Bearer vHiJAowzbHiaxgX3RG7K9NhMgOrU")
-                }.build()
-                chain.proceed(request)
-            }
+    private fun injectAmadeusSecurityRetrofit(): Retrofit {
+        return Retrofit.Builder().apply {
+            baseUrl(Constants.AMADEUS_SECURITY_BASE_URL)
+            addConverterFactory(GsonConverterFactory.create())
         }.build()
     }
 
-    fun provideAmadeusApi(): AmadeusApi {
-        return injectRetrofit().create(AmadeusApi::class.java)
+    private fun injectAmadeusSecurityApi(): AmadeusSecurityApi {
+        return injectAmadeusSecurityRetrofit().create(AmadeusSecurityApi::class.java)
+    }
+
+    private fun injectAuthenticatorOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .authenticator(AccessTokenAuthenticator(AccessTokenProviderImpl(injectAmadeusSecurityApi())))
+            .build()
+    }
+
+    fun injectAmadeusShoppingApi(): AmadeusShoppingApi {
+        return injectAmadeusShoppingRetrofit().create(AmadeusShoppingApi::class.java)
     }
 }

@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import com.build38.fly.model.amadeus.AmadeusOfferItem
 import com.build38.fly.model.amadeus.AmadeusResponse
+import com.build38.fly.repository.AmadeusShoppingApi
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,26 +17,29 @@ class MainActivity : AppCompatActivity() {
         private const val LOG_TAG = "AMADEUS"
     }
 
-    private lateinit var retrofitCall: Button
+    private lateinit var amadeusApi: AmadeusShoppingApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        retrofitCall = searchButton
+        amadeusApi = Injector(this).injectAmadeusShoppingApi()
+
+        val retrofitCall: Button = searchButton
 
         retrofitCall.setOnClickListener {
-            val amadeusApi = Injector(this).provideAmadeusApi()
             amadeusApi
-                .getRoundTripFlights("BCN", "MAD", "2019-10-01", "2019-11-01")
+                .getRoundTripFlights("BCN", "CLJ", "2019-09-23", "2019-11-01")
                 .enqueue(object : Callback<AmadeusResponse> {
                     override fun onResponse(call: Call<AmadeusResponse>, response: Response<AmadeusResponse>) {
                         Log.d(LOG_TAG, "I AM ALIVE")
+                        val resp = response.body()?.data?.get(0)?.offerItems?.get(0)?.price
+                        Log.d(LOG_TAG, "Price: $resp")
                     }
 
                     override fun onFailure(call: Call<AmadeusResponse>, t: Throwable) {
                         Log.d(LOG_TAG, ":((((((((((")
-                        Log.d(LOG_TAG, t.message)
+                        Log.d(LOG_TAG, t.message?:"Thrown error without message")
                         t.printStackTrace()
                     }
                 })
