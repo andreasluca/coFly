@@ -32,7 +32,7 @@ class Injector(private val context: Context) {
 
     private fun injectAuthenticatorOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .authenticator(AccessTokenAuthenticator(AccessTokenProviderImpl(injectAmadeusSecurityApi())))
+            .authenticator(AccessTokenAuthenticator(AccessTokenProviderImpl.getInstance(injectAmadeusSecurityApi())))
             .build()
     }
 

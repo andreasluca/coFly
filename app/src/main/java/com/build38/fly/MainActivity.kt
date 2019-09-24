@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         retrofitCall.setOnClickListener {
             amadeusApi
-                .getRoundTripFlights("BCN", "CLJ", "2019-09-23", "2019-11-01")
+                .getRoundTripFlights("BCN", "CLJ", "2019-10-23", "2019-11-01")
                 .enqueue(object : Callback<AmadeusResponse> {
                     override fun onResponse(call: Call<AmadeusResponse>, response: Response<AmadeusResponse>) {
                         Log.d(LOG_TAG, "I AM ALIVE")
