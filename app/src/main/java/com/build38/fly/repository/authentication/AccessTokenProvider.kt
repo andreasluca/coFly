@@ -5,9 +5,10 @@ import android.util.Log
 import com.build38.fly.Constants
 import com.build38.fly.SingletonHolder
 
-class AccessTokenProviderImpl private constructor(private val amadeusSecurityApi: AmadeusSecurityApi) : AccessTokenProvider {
+class AccessTokenProvider private constructor(private val amadeusSecurityApi: AmadeusSecurityApi) :
+    AccessTokenProviderInterface {
 
-    companion object: SingletonHolder<AccessTokenProviderImpl, AmadeusSecurityApi>(::AccessTokenProviderImpl) {
+    companion object : SingletonHolder<AccessTokenProvider, AmadeusSecurityApi>(::AccessTokenProvider) {
         private const val LOG_TAG = "AMADEUS_SECURITY"
     }
 

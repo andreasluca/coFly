@@ -3,7 +3,7 @@ package com.build38.fly.repository.authentication
 /**
  * Provides an access token for request authorization.
  */
-interface AccessTokenProvider{
+interface AccessTokenProviderInterface{
 
     /**
      * Returns an access token. In the event that you don't have a token return null.

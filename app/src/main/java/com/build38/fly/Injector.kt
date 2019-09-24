@@ -4,7 +4,7 @@ import AmadeusSecurityApi
 import android.content.Context
 import com.build38.fly.repository.AmadeusShoppingApi
 import com.build38.fly.repository.authentication.AccessTokenAuthenticator
-import com.build38.fly.repository.authentication.AccessTokenProviderImpl
+import com.build38.fly.repository.authentication.AccessTokenProvider
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,7 +32,7 @@ class Injector(private val context: Context) {
 
     private fun injectAuthenticatorOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .authenticator(AccessTokenAuthenticator(AccessTokenProviderImpl.getInstance(injectAmadeusSecurityApi())))
+            .authenticator(AccessTokenAuthenticator(AccessTokenProvider.getInstance(injectAmadeusSecurityApi())))
             .build()
     }
 
