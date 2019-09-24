@@ -16,6 +16,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "AMADEUS_AUTH_TOKEN_CLIENT_ID", "\"QYlNY5V2OWQ4R2E1JfDD76PGHetJvT7N\""
+            buildConfigField "String", "AMADEUS_AUTH_TOKEN_CLIENT_SECRET", "\"2AMwnKeBumrIcuX6\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
