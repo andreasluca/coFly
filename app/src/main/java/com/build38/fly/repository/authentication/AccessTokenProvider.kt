@@ -2,6 +2,7 @@ package com.build38.fly.repository.authentication
 
 import AmadeusSecurityApi
 import android.util.Log
+import com.build38.fly.BuildConfig
 import com.build38.fly.Constants
 import com.build38.fly.SingletonHolder
 
@@ -34,8 +35,8 @@ class AccessTokenProvider private constructor(private val amadeusSecurityApi: Am
 
         return amadeusSecurityApi.getAuthenticationToken(
             Constants.AMADEUS_AUTH_TOKEN_GRANT_TYPE,
-            Constants.AMADEUS_AUTH_TOKEN_CLIENT_ID,
-            Constants.AMADEUS_AUTH_TOKEN_CLIENT_SECRET
+            BuildConfig.AMADEUS_AUTH_TOKEN_CLIENT_ID,
+            BuildConfig.AMADEUS_AUTH_TOKEN_CLIENT_SECRET
         ).execute().body()?.accessToken
             ?: throw Exception("$LOG_TAG: Something went bad...")
     }
