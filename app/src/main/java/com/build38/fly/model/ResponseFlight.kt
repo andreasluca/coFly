@@ -1,6 +1,6 @@
 package com.build38.fly.model
 
-data class Flight(
+data class ResponseFlight(
     private val from: String,
     private val to: String,
     private val departure: String,
