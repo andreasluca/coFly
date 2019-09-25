@@ -41,7 +41,6 @@ class AmadeusRepository(private val amadeusApi: AmadeusShoppingApi): Repository 
                                                      amadeusDepartureFlightInfo.arrival.at,
                                                      amadeusDepartureFlightInfo.duration)
                         var returnFlight: ResponseFlight? = null
-                        // TODO: sobra, pq es roundtrip
                         if (requestFlight.isRoundTrip) {
                             val amadeusReturnFlightInfo = offer.services[1].segments[0].flightSegment
                             returnFlight = ResponseFlight(amadeusReturnFlightInfo.departure.iataCode,

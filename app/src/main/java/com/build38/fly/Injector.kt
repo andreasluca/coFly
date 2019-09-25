@@ -1,15 +1,16 @@
 package com.build38.fly
 
 import AmadeusSecurityApi
-import android.content.Context
+import com.build38.fly.repository.AmadeusRepository
 import com.build38.fly.repository.AmadeusShoppingApi
+import com.build38.fly.repository.Repository
 import com.build38.fly.repository.authentication.AccessTokenAuthenticator
 import com.build38.fly.repository.authentication.AccessTokenProvider
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Injector(private val context: Context) {
+object Injector {
 
     private fun injectAmadeusShoppingRetrofit(): Retrofit {
         return Retrofit.Builder().apply {
@@ -36,7 +37,15 @@ class Injector(private val context: Context) {
             .build()
     }
 
-    fun injectAmadeusShoppingApi(): AmadeusShoppingApi {
+    private fun injectAmadeusShoppingApi(): AmadeusShoppingApi {
         return injectAmadeusShoppingRetrofit().create(AmadeusShoppingApi::class.java)
+    }
+
+    private fun injectRepository(): Repository {
+        return AmadeusRepository(injectAmadeusShoppingApi())
+    }
+
+    fun injectMainPresenter(): MainPresenter {
+        return MainPresenter(injectRepository())
     }
 }
