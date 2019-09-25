@@ -28,21 +28,7 @@ class MainActivity : AppCompatActivity() {
         val retrofitCall: Button = searchButton
 
         retrofitCall.setOnClickListener {
-            amadeusApi
-                .getRoundTripFlights("BCN", "CLJ", "2019-10-23", "2019-11-01")
-                .enqueue(object : Callback<AmadeusResponse> {
-                    override fun onResponse(call: Call<AmadeusResponse>, response: Response<AmadeusResponse>) {
-                        Log.d(LOG_TAG, "I AM ALIVE")
-                        val resp = response.body()?.data?.get(0)?.offerItems?.get(0)?.price
-                        Log.d(LOG_TAG, "Price: $resp")
-                    }
 
-                    override fun onFailure(call: Call<AmadeusResponse>, t: Throwable) {
-                        Log.d(LOG_TAG, ":((((((((((")
-                        Log.d(LOG_TAG, t.message?:"Thrown error without message")
-                        t.printStackTrace()
-                    }
-                })
         }
     }
 }
