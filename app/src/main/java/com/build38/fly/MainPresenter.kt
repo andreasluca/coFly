@@ -1,5 +1,6 @@
 package com.build38.fly
 
+import android.util.Log
 import com.build38.fly.model.RequestFlight
 import com.build38.fly.repository.Repository
 import kotlinx.coroutines.Dispatchers
@@ -18,9 +19,14 @@ class MainPresenter(val repository: Repository) {
     }
 
     suspend fun onUserClickedSearchFlight(requestFlight: RequestFlight) {
-        withContext(Dispatchers.Default) {
+        withContext(Dispatchers.IO) {
             val services = repository.getFlights(requestFlight)
-            if (services == null) view?.showFlightsNotFoundFailure() else view?.showFlightFoundSuccess(services[0])
+            if (services == null) {
+                view?.showFlightsNotFoundFailure()
+            } else {
+                // TODO: select what service to show
+                view?.showFlightFoundSuccess(services[0])
+            }
         }
     }
 }

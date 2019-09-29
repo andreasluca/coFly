@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
 
         retrofitCall.setOnClickListener {
             GlobalScope.launch {
-                val requestFlight = RequestFlight("BCN", "CLJ", "23/10/2019", "25/12/2019", true)
+                val requestFlight = RequestFlight("BCN", "JFK", "2019-10-15", "2019-11-13", true)
                 mainPresenter.onUserClickedSearchFlight(requestFlight)
             }
         }

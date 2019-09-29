@@ -8,6 +8,7 @@ import com.build38.fly.model.amadeus.AmadeusResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class AmadeusRepository(private val amadeusApi: AmadeusShoppingApi): Repository {
 
@@ -15,50 +16,43 @@ class AmadeusRepository(private val amadeusApi: AmadeusShoppingApi): Repository 
         private const val LOG_TAG = "AmadeusRepository"
     }
 
-    override fun getFlights(requestFlight: RequestFlight): Array<Service>? {
-        var flights: MutableList<Service>? = mutableListOf()
-        amadeusApi
-            .getRoundTripFlights(requestFlight.from,
-                                 requestFlight.to,
-                                 requestFlight.departOn,
-                                 requestFlight.returnOn!!)
-            .enqueue(object : Callback<AmadeusResponse> {
-                override fun onResponse(call: Call<AmadeusResponse>, response: Response<AmadeusResponse>) {
-                    Log.d(LOG_TAG, "I AM ALIVE")
-                    val resp = response.body()?.data?.get(0)?.offerItems?.get(0)?.price
-                    Log.d(LOG_TAG, "Price: $resp")
+    override suspend fun getFlights(requestFlight: RequestFlight): Array<Service>? {
+        val flights: MutableList<Service>? = mutableListOf()
+        try {
+            val response  = amadeusApi
+                .getRoundTripFlights(requestFlight.from,
+                    requestFlight.to,
+                    requestFlight.departOn,
+                    requestFlight.returnOn!!).execute()
 
-                    val offers = response.body()?.data?.get(0)?.offerItems
-                    if (offers == null) {
-                        flights = null
-                        return
-                    }
-                    for (offer in offers) {
-                        val amadeusDepartureFlightInfo = offer.services[0].segments[0].flightSegment
-                        val departureFlight = ResponseFlight(amadeusDepartureFlightInfo.departure.iataCode,
-                                                     amadeusDepartureFlightInfo.arrival.iataCode,
-                                                     amadeusDepartureFlightInfo.departure.at,
-                                                     amadeusDepartureFlightInfo.arrival.at,
-                                                     amadeusDepartureFlightInfo.duration)
-                        var returnFlight: ResponseFlight? = null
-                        if (requestFlight.isRoundTrip) {
-                            val amadeusReturnFlightInfo = offer.services[1].segments[0].flightSegment
-                            returnFlight = ResponseFlight(amadeusReturnFlightInfo.departure.iataCode,
-                                                  amadeusReturnFlightInfo.arrival.iataCode,
-                                                  amadeusReturnFlightInfo.departure.at,
-                                                  amadeusReturnFlightInfo.arrival.at,
-                                                  amadeusReturnFlightInfo.duration)
-                        }
-                        flights?.add(Service(departureFlight, returnFlight, offer.price.total))
-                    }
-                }
+            Log.d(LOG_TAG, "Start parsing response from the Amadeus API")
 
-                override fun onFailure(call: Call<AmadeusResponse>, t: Throwable) {
-                    Log.d(LOG_TAG, ":((((((((((")
-                    Log.d(LOG_TAG, t.message?:"Thrown error without message")
-                    throw t
+            val offers = response.body()?.data?.get(0)?.offerItems ?: return null
+
+            for (offer in offers) {
+                val amadeusDepartureFlightInfo = offer.services[0].segments[0].flightSegment
+                val departureFlight = ResponseFlight(amadeusDepartureFlightInfo.departure.iataCode,
+                    amadeusDepartureFlightInfo.arrival.iataCode,
+                    amadeusDepartureFlightInfo.departure.at,
+                    amadeusDepartureFlightInfo.arrival.at,
+                    amadeusDepartureFlightInfo.duration)
+                var returnFlight: ResponseFlight? = null
+                if (requestFlight.isRoundTrip) {
+                    val amadeusReturnFlightInfo = offer.services[1].segments[0].flightSegment
+                    returnFlight = ResponseFlight(amadeusReturnFlightInfo.departure.iataCode,
+                        amadeusReturnFlightInfo.arrival.iataCode,
+                        amadeusReturnFlightInfo.departure.at,
+                        amadeusReturnFlightInfo.arrival.at,
+                        amadeusReturnFlightInfo.duration)
                 }
-            })
+                flights?.add(Service(departureFlight, returnFlight, offer.price.total))
+            }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Error while accessing Amadeus API: ${e.localizedMessage}")
+            return null
+        }
+
+        Log.d(LOG_TAG, "Success request to Amadeus API")
         return flights?.toTypedArray()
     }
 }
