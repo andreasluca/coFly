@@ -31,7 +31,11 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
         retrofitCall.setOnClickListener {
             GlobalScope.launch {
                 val requestFlight = RequestFlight("BCN", "JFK", "2019-10-15", "2019-11-13", true)
-                mainPresenter.onUserClickedSearchFlight(requestFlight)
+                // One flight: mainPresenter.onUserClickedSearchFlight(requestFlight)
+
+                val requestFlight2 = RequestFlight("BCN", "MAD", "2019-10-15", "2019-11-13", true)
+                val requestFlights = arrayOf(requestFlight, requestFlight2)
+                mainPresenter.onUserClickedSearchFlights(requestFlights)
             }
         }
     }
@@ -47,7 +51,10 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
     }
 
     override fun showFlightsFoundSuccess(services: Array<Service>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d(LOG_TAG, "YEAH!!!!!!!!!!!!!!!!!!!")
+        for (service in services) {
+            Log.d(LOG_TAG, service.toString())
+        }
     }
 
     override fun showFlightsNotFoundFailure() {

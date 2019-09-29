@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface AmadeusShoppingApi {
+    // TODO: non stop is...
     @GET("flight-offers")
     fun getRoundTripFlights(@Query("origin") origin: String,
                             @Query("destination") destination: String,
