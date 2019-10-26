@@ -1,4 +1,4 @@
-package com.build38.fly.model
+package com.andreas.fly.model
 
 data class RequestFlight(
     val from: String,

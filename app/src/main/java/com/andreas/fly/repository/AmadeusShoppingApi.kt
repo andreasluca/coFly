@@ -1,6 +1,6 @@
-package com.build38.fly.repository
+package com.andreas.fly.repository
 
-import com.build38.fly.model.amadeus.AmadeusResponse
+import com.andreas.fly.model.amadeus.AmadeusResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

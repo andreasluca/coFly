@@ -1,4 +1,4 @@
-package com.build38.fly
+package com.andreas.fly
 
 class Constants {
     companion object {

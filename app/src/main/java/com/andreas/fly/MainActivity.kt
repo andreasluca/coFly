@@ -1,12 +1,11 @@
-package com.build38.fly
+package com.andreas.fly
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import com.build38.fly.model.RequestFlight
-import com.build38.fly.model.Service
-import com.build38.fly.repository.AmadeusShoppingApi
+import com.andreas.fly.model.RequestFlight
+import com.andreas.fly.model.Service
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

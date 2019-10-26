@@ -1,13 +1,9 @@
-package com.build38.fly.repository
+package com.andreas.fly.repository
 
 import android.util.Log
-import com.build38.fly.model.RequestFlight
-import com.build38.fly.model.ResponseFlight
-import com.build38.fly.model.Service
-import com.build38.fly.model.amadeus.AmadeusResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.andreas.fly.model.RequestFlight
+import com.andreas.fly.model.ResponseFlight
+import com.andreas.fly.model.Service
 import java.lang.Exception
 
 class AmadeusRepository(private val amadeusApi: AmadeusShoppingApi): Repository {

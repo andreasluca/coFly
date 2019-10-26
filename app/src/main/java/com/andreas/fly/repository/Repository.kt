@@ -1,7 +1,7 @@
-package com.build38.fly.repository
+package com.andreas.fly.repository
 
-import com.build38.fly.model.RequestFlight
-import com.build38.fly.model.Service
+import com.andreas.fly.model.RequestFlight
+import com.andreas.fly.model.Service
 
 interface Repository {
 

@@ -1,4 +1,4 @@
-import com.build38.fly.model.amadeus.AmadeusAuthenticationTokenResponse
+import com.andreas.fly.model.amadeus.AmadeusAuthenticationTokenResponse
 import retrofit2.Call
 import retrofit2.http.*
 

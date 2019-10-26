@@ -1,9 +1,8 @@
-package com.build38.fly
+package com.andreas.fly
 
-import android.util.Log
-import com.build38.fly.model.RequestFlight
-import com.build38.fly.model.Service
-import com.build38.fly.repository.Repository
+import com.andreas.fly.model.RequestFlight
+import com.andreas.fly.model.Service
+import com.andreas.fly.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

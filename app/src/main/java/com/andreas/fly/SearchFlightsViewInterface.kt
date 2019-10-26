@@ -1,6 +1,6 @@
-package com.build38.fly
+package com.andreas.fly
 
-import com.build38.fly.model.Service
+import com.andreas.fly.model.Service
 
 interface SearchFlightsViewInterface {
 

@@ -1,10 +1,10 @@
-package com.build38.fly.repository.authentication
+package com.andreas.fly.repository.authentication
 
 import AmadeusSecurityApi
 import android.util.Log
-import com.build38.fly.BuildConfig
-import com.build38.fly.Constants
-import com.build38.fly.helpers.SingletonHolder
+import com.andreas.fly.BuildConfig
+import com.andreas.fly.Constants
+import com.andreas.fly.helpers.SingletonHolder
 
 class AccessTokenProvider private constructor(private val amadeusSecurityApi: AmadeusSecurityApi) :
     AccessTokenProviderInterface {

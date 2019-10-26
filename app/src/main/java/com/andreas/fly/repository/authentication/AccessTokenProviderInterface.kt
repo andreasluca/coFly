@@ -1,4 +1,4 @@
-package com.build38.fly.repository.authentication
+package com.andreas.fly.repository.authentication
 
 /**
  * Provides an access token for request authorization.

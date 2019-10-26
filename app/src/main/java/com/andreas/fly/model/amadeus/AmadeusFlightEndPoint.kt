@@ -1,4 +1,4 @@
-package com.build38.fly.model.amadeus
+package com.andreas.fly.model.amadeus
 
 data class AmadeusFlightEndPoint(
     // airport iata code: enum ? private val iata: AmadeusIataCode,
