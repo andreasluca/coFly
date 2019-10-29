@@ -1,14 +1,16 @@
 package com.andreas.fly
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.andreas.fly.model.RequestFlight
 import com.andreas.fly.model.Service
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
 
@@ -17,6 +19,12 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
     }
 
     private lateinit var mainPresenter: MainPresenter
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.mainmenu, menu)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

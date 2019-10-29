@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FLY</string>
+    <string name="app_name">Search your flight</string>
+    <string name="groups">Groups</string>
 </resources>
