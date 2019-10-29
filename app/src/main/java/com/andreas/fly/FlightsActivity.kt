@@ -22,11 +22,12 @@ class FlightsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flights)
 
-        services = intent.getParcelableArrayListExtra<Service>(INTENT_FLIGHTS_KEY)
-
         // Set action bar
-        val flyingTo = "Flying to ${services[0].departureFlight.to}"
+        val flyingTo = "Showing results"
         supportActionBar!!.title = flyingTo
+
+        // Get flights
+        services = intent.getParcelableArrayListExtra<Service>(INTENT_FLIGHTS_KEY)
 
         // Populate recycler view
         flightsRecyclerView = flights_recyclerview
