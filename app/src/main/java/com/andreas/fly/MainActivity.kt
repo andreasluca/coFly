@@ -42,11 +42,10 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
 
         // Mock TravelGroup
         val passenger1 = Passenger("Andreas", "BCN")
-        //val passenger2 = Passenger("Benjamin", "MAD")
-        //val passenger3 = Passenger("Ruben", "LHR")
-        //val passenger4 = Passenger("Marc", "CDG")
-        //val brothers = arrayOf(passenger1, passenger2, passenger3, passenger4)
-        val brothers = arrayOf(passenger1)
+        val passenger2 = Passenger("Benjamin", "MAD")
+        val passenger3 = Passenger("Ruben", "LHR")
+        val passenger4 = Passenger("Marc", "CDG")
+        val brothers = arrayOf(passenger1, passenger2, passenger3, passenger4)
         val travelGroup1 = TravelGroup("Brothers", brothers)
 
         retrofitCall.setOnClickListener {
@@ -62,10 +61,7 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
                     )
                 }
 
-                // mainPresenter.onUserClickedSearchFlights(requestFlights.toTypedArray())
-                val s1 = Service(ResponseFlight("asd", "asdf", "asd", "asd", "asd"), null, 123.1)
-                val s2 = Service(ResponseFlight("asd", "asdf", "asd", "asd", "asd"), null, 123.1)
-                showFlightsFoundSuccess(arrayOf(s1, s2))
+                mainPresenter.onUserClickedSearchFlights(requestFlights.toTypedArray())
             }
         }
     }
@@ -95,20 +91,8 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
     }
 
     private fun startFlightsActivity(services: ArrayList<Service>) {
-        val s1 = Service(
-            ResponseFlight("BCN", "MAD", "2019-11-15T13:30:00-05:00", "2019-11-15T13:30:00-05:00", "2h 30min"),
-            ResponseFlight("MAD", "BCN", "2019-11-15T13:30:00-05:00", "2019-11-15T13:30:00-05:00", "1h 12min"),
-            123.1
-        )
-
-        val s2 = Service(
-            ResponseFlight("BCN", "LDN", "2019-11-15T13:30:00-05:00", "2019-11-15T13:30:00-05:00", "3h 12min"),
-            ResponseFlight("LDN", "BCN", "2019-11-15T13:30:00-05:00", "2019-11-15T13:30:00-05:00", "4h 34min"),
-            234.9
-        )
-
         val flightsIntent = Intent(this, FlightsActivity::class.java)
-        flightsIntent.putParcelableArrayListExtra(INTENT_FLIGHTS_KEY, arrayListOf(s1, s2))
+        flightsIntent.putParcelableArrayListExtra(INTENT_FLIGHTS_KEY, services)
         startActivity(flightsIntent)
     }
 }
