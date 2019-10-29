@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.andreas.fly.model.Passenger
 import com.andreas.fly.model.RequestFlight
 import com.andreas.fly.model.Service
+import com.andreas.fly.model.TravelGroup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,14 +37,28 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
 
         val retrofitCall: Button = searchButton
 
+        // Mock TravelGroup
+        val passenger1 = Passenger("Andreas", "BCN")
+        val passenger2 = Passenger("Benjamin", "MAD")
+        val passenger3 = Passenger("Ruben", "LHR")
+        val passenger4 = Passenger("Marc", "CDG")
+        val brothers = arrayOf(passenger1, passenger2, passenger3, passenger4)
+        val travelGroup1 = TravelGroup("Brothers", brothers)
+
         retrofitCall.setOnClickListener {
             GlobalScope.launch {
-                val requestFlight = RequestFlight("BCN", "JFK", "2019-10-15", "2019-11-13", true)
-                // One flight: mainPresenter.onUserClickedSearchFlight(requestFlight)
+                val to = "JFK"
+                val departOn = "2019-11-15"
+                val returnOn = "2019-11-25"
+                val requestFlights = mutableListOf<RequestFlight>()
 
-                val requestFlight2 = RequestFlight("BCN", "MAD", "2019-10-15", "2019-11-13", true)
-                val requestFlights = arrayOf(requestFlight, requestFlight2)
-                mainPresenter.onUserClickedSearchFlights(requestFlights)
+                for (passenger in travelGroup1.passengers) {
+                    requestFlights.add(
+                        RequestFlight(passenger.departure, to, departOn, returnOn, true)
+                    )
+                }
+
+                mainPresenter.onUserClickedSearchFlights(requestFlights.toTypedArray())
             }
         }
     }
