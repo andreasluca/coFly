@@ -20,6 +20,10 @@ class FlightsActivity : AppCompatActivity() {
 
         services = intent.getParcelableArrayListExtra<Service>(INTENT_FLIGHTS_KEY)
 
+        // Set action bar
+        val flyingTo = "Flying to ${services[0].departureFlight.to}"
+        supportActionBar!!.setTitle(flyingTo)
+
         for (service in services) {
             Log.d(LOG_TAG, service.toString())
         }

@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Set action bar
+        val searchYourFlight = "Search your flight"
+        supportActionBar!!.setTitle(searchYourFlight)
+
         mainPresenter = Injector.injectMainPresenter()
         mainPresenter.onViewAttached(this)
 
