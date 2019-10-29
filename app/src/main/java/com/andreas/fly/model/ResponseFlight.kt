@@ -5,9 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ResponseFlight(
-    private val from: String,
-    private val to: String,
-    private val departure: String,
-    private val arrival: String,
-    private val duration: String
+    val from: String,
+    val to: String,
+    val departure: String,
+    val arrival: String,
+    val duration: String
 ) : Parcelable
