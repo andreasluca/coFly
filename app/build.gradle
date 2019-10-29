@@ -15,6 +15,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    androidExtensions {
+        experimental = true
+    }
+
     buildTypes {
         debug {
             buildConfigField "String", "AMADEUS_AUTH_TOKEN_CLIENT_ID", "\"QYlNY5V2OWQ4R2E1JfDD76PGHetJvT7N\""
