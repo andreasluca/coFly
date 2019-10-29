@@ -3,8 +3,11 @@ package com.andreas.fly
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.andreas.fly.Constants.Companion.INTENT_FLIGHTS_KEY
 import com.andreas.fly.model.Service
+import kotlinx.android.synthetic.main.activity_flights.*
 
 class FlightsActivity : AppCompatActivity() {
 
@@ -12,6 +15,7 @@ class FlightsActivity : AppCompatActivity() {
         const val LOG_TAG = "FlightsActivity"
     }
 
+    lateinit var flightsRecyclerView: RecyclerView
     lateinit var services: ArrayList<Service>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +28,12 @@ class FlightsActivity : AppCompatActivity() {
         val flyingTo = "Flying to ${services[0].departureFlight.to}"
         supportActionBar!!.title = flyingTo
 
+        // Populate recycler view
+        flightsRecyclerView = flights_recyclerview
+        flightsRecyclerView.layoutManager = LinearLayoutManager(this)
+        flightsRecyclerView.adapter = FlightsRecyclerViewAdapter(services)
 
+        // TODO: remove
         for (service in services) {
             Log.d(LOG_TAG, service.toString())
         }
