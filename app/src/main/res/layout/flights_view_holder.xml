@@ -7,4 +7,100 @@
         android:adjustViewBounds="true"
         android:background="@drawable/flights_holder"
         android:orientation="vertical"
-        android:padding="8dp"/>
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="1">
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+            <TextView
+                    android:id="@+id/departureTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BCN"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            <TextView
+                    android:id="@+id/depatureTimeTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="06:50 AM"
+                    android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+            <TextView
+                    android:id="@+id/durationTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2h 15min"
+                    android:textSize="18sp" />
+
+            <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/gray_line"
+                    android:adjustViewBounds="true"
+                    android:paddingTop="8dp"/>
+            <TextView
+                    android:id="@+id/priceTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="124.99 €"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:paddingTop="8dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+            <TextView
+                    android:id="@+id/arrivalTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LDN"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            <TextView
+                    android:id="@+id/arrivalTimeTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08:55 AM"
+                    android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
