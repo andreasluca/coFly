@@ -22,7 +22,8 @@ class FlightsActivity : AppCompatActivity() {
 
         // Set action bar
         val flyingTo = "Flying to ${services[0].departureFlight.to}"
-        supportActionBar!!.setTitle(flyingTo)
+        supportActionBar!!.title = flyingTo
+
 
         for (service in services) {
             Log.d(LOG_TAG, service.toString())
