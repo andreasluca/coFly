@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.andreas.fly.Constants.Companion.INTENT_FLIGHTS_KEY
@@ -17,13 +20,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
+class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterView.OnItemSelectedListener {
 
     companion object {
         private const val LOG_TAG = "MainActivity"
+        private val AIRPORT_CITIES = arrayListOf("Atlanta", "Beijing", "London", "Chicago", "Tokyo", "Los Angeles", "Paris", "Dallas", "Frankfurt", "Hong Kong", "Denver", "Dubai", "Amsterdam", "Madrid", "Bangkok", "New York", "Singapore", "Las Vegas", "Shanghai", "San Francisco", "Phoenix", "Houston", "Miami", "Munich", "Kuala", "Rome", "Istanbul", "Sydney", "Orlando", "Barcelona", "London", "Toronto", "Minneapolis", "Seattle", "Detroit", "Philadelphia", "Sao Paulo", "Boston", "Paris")
     }
 
     private lateinit var mainPresenter: MainPresenter
+    private lateinit var airportCityAdapter: ArrayAdapter<String>
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -37,7 +42,7 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
 
         // Set action bar
         val searchYourFlight = "Search your flight"
-        supportActionBar!!.setTitle(searchYourFlight)
+        supportActionBar!!.title = searchYourFlight
 
         mainPresenter = Injector.injectMainPresenter()
         mainPresenter.onViewAttached(this)
@@ -89,6 +94,18 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
                 cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
+        // Set spinner
+        arrivalSpinner.onItemSelectedListener = this
+        airportCityAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, AIRPORT_CITIES)
+        // Set layout to use when the list of choices appear
+        airportCityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set Adapter to Spinner
+        arrivalSpinner.adapter = airportCityAdapter
+        // Set default value
+        val defaultArrivalAirportPos = airportCityAdapter.getPosition("New York")
+        arrivalSpinner.setSelection(defaultArrivalAirportPos)
+        destinationTextId.text = getIataCodeFor("New York")
+
         retrofitCall.setOnClickListener {
             GlobalScope.launch {
                 val to = "JFK"
@@ -110,6 +127,14 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
     override fun onDestroy() {
         mainPresenter.onViewDetached()
         super.onDestroy()
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        destinationTextId.text = getIataCodeFor(airportCityAdapter.getItem(p2)!!)
     }
 
     override fun showFlightFoundSuccess(service: Service) {
@@ -135,5 +160,48 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface {
         val flightsIntent = Intent(this, FlightsActivity::class.java)
         flightsIntent.putParcelableArrayListExtra(INTENT_FLIGHTS_KEY, services)
         startActivity(flightsIntent)
+    }
+
+    private fun getIataCodeFor(airportCity: String): String {
+        when (airportCity) {
+            "Atlanta" -> return "ATL"
+            "Beijing" -> return "PEK"
+            "London" -> return "LHR"
+            "Chicago" -> return "ORD"
+            "Tokyo" -> return "HND"
+            "Los Angeles" -> return "LAX"
+            "Paris" -> return "CDG"
+            "Dallas" -> return "DFW"
+            "Frankfurt" -> return "FRA"
+            "Hong Kong" -> return "HKG"
+            "Denver" -> return "DEN"
+            "Dubai" -> return "DXB"
+            "Amsterdam" -> return "AMS"
+            "Madrid" -> return "MAD"
+            "Bangkok" -> return "BKK"
+            "New York" -> return "JFK"
+            "Singapore" -> return "SIN"
+            "Las Vegas" -> return "LAS"
+            "Shanghai" -> return "PVG"
+            "San Francisco" -> return "SFO"
+            "Phoenix" -> return "PHX"
+            "Houston" -> return "IAH"
+            "Miami" -> return "MIA"
+            "Munich" -> return "MUC"
+            "Kuala" -> return "KUL"
+            "Rome" -> return "FCO"
+            "Istanbul" -> return "IST"
+            "Sydney" -> return "SYD"
+            "Orlando" -> return "MCO"
+            "Barcelona" -> return "BCN"
+            "Toronto" -> return "YYZ"
+            "Minneapolis" -> return "MSP"
+            "Seattle" -> return "SEA"
+            "Detroit" -> return "DTW"
+            "Philadelphia" -> return "PHL"
+            "Sao Paulo" -> return "GRU"
+            "Boston" -> return "BOS"
+            else -> return "LHR"
+        }
     }
 }
