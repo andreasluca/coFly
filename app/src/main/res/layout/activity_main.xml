@@ -68,12 +68,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"/>
-
-                <!-- <TextView
-                        android:text="London"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/destinationFullNameTextId"
-                        android:textSize="18sp"/> -->
             </LinearLayout>
         </LinearLayout>
 
