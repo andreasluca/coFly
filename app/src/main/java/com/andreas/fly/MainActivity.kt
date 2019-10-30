@@ -33,8 +33,9 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
     private lateinit var destinationText: TextView
     private lateinit var departureDate: TextView
     private lateinit var arrivalDate: TextView
+    private lateinit var busyDialog: BusyDialogFragment
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.mainmenu, menu)
         return true
@@ -119,6 +120,8 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
         destinationText.text = getIataCodeFor("New York")
 
         retrofitCall.setOnClickListener {
+            busyDialog = BusyDialogFragment.show(supportFragmentManager)
+
             GlobalScope.launch {
                 val to = destinationText.text.toString()
                 val departOn = departureDate.text.toString()
@@ -130,7 +133,6 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
                         RequestFlight(passenger.departure, to, departOn, returnOn, true)
                     )
                 }
-
                 mainPresenter.onUserClickedSearchFlights(requestFlights.toTypedArray())
             }
         }
@@ -150,21 +152,25 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
     }
 
     override fun showFlightFoundSuccess(service: Service) {
+        busyDialog.dismiss()
         Log.d(LOG_TAG, "YEAH!!!!!!!!!!!!!!!!!!!")
         Log.d(LOG_TAG, service.toString())
         startFlightsActivity(arrayListOf(service))
     }
 
     override fun showFlightsFoundSuccess(services: Array<Service>) {
+        busyDialog.dismiss()
         Log.d(LOG_TAG, "YEAH!!!!!!!!!!!!!!!!!!!")
         startFlightsActivity(services.toCollection(ArrayList()))
     }
 
     override fun showFlightsNotFoundFailure() {
+        busyDialog.dismiss()
         Log.d(LOG_TAG, "NOT FOUND!!!!!!!!!!!!!")
     }
 
     override fun showUnexpectedError() {
+        busyDialog.dismiss()
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

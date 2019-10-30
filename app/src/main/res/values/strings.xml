@@ -2,4 +2,7 @@
     <string name="app_name">Search your flight</string>
     <string name="groups">Groups</string>
     <string name="flights_main_text">We are showing you the best results with the best prices!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
