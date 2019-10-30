@@ -42,7 +42,8 @@
                         android:text="Friends"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/fromTextId"
-                        android:textColor="@android:color/black" android:textSize="30sp" android:textStyle="bold"/>
+                        android:textColor="@android:color/black" android:textSize="30sp" android:textStyle="bold"
+                        android:clickable="true"/>
                 <TextView
                         android:text="(5 PEOPLE)"
                         android:layout_width="wrap_content"

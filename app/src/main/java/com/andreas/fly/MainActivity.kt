@@ -1,5 +1,6 @@
 package com.andreas.fly
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -26,6 +27,30 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
     companion object {
         private const val LOG_TAG = "MainActivity"
         private val AIRPORT_CITIES = arrayListOf("Atlanta", "Beijing", "London", "Chicago", "Tokyo", "Los Angeles", "Paris", "Dallas", "Frankfurt", "Hong Kong", "Denver", "Dubai", "Amsterdam", "Madrid", "Bangkok", "New York", "Singapore", "Las Vegas", "Shanghai", "San Francisco", "Phoenix", "Houston", "Miami", "Munich", "Kuala", "Rome", "Istanbul", "Sydney", "Orlando", "Barcelona", "London", "Toronto", "Minneapolis", "Seattle", "Detroit", "Philadelphia", "Sao Paulo", "Boston", "Paris")
+
+        // Mock TravelGroups
+        val brother1 = Passenger("Andreas", "BCN")
+        val brother2 = Passenger("Benjamin", "MAD")
+        val brother3 = Passenger("Ruben", "LHR")
+        val brother4 = Passenger("Marc", "CDG")
+        val brothers = arrayOf(brother1, brother2, brother3, brother4)
+        val brothersTravelGroup = TravelGroup("Brothers", brothers)
+
+        val passenger1 = Passenger("Andreas", "BCN")
+        val passenger2 = Passenger("Alex", "PEK")
+        val passenger3 = Passenger("Sergi", "HND")
+        val passenger4 = Passenger("Juan", "DFW")
+        val passenger5 = Passenger("Daniel", "MUC")
+        val friends = arrayOf(passenger1, passenger2, passenger3, passenger4, passenger5)
+        val friendsTravelGroup = TravelGroup("Friends", friends)
+
+        val workMate1 = Passenger("Andreas", "BCN")
+        val workMate2 = Passenger("Marc", "MAD")
+        val work = arrayOf(workMate1, workMate2)
+        val workTravelGroup = TravelGroup("Work", work)
+
+        val availableTravelGroups = arrayListOf(brothersTravelGroup, friendsTravelGroup, workTravelGroup)
+        val availableTravelGroupsNames = availableTravelGroups.map { it.name }.toTypedArray()
     }
 
     private lateinit var mainPresenter: MainPresenter
@@ -33,7 +58,11 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
     private lateinit var destinationText: TextView
     private lateinit var departureDate: TextView
     private lateinit var arrivalDate: TextView
+    private lateinit var fromText: TextView
+    private lateinit var amountOfPeopleText: TextView
     private lateinit var busyDialog: BusyDialogFragment
+
+    private var defaultTravelGroup = brothersTravelGroup
 
         override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -56,18 +85,16 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
         destinationText = destinationTextId
         departureDate = departureDateId
         arrivalDate = arrivalDateId
+        fromText = fromTextId
+        amountOfPeopleText = amountOfPeopleTextId
 
-        // Mock TravelGroup
-        val passenger1 = Passenger("Andreas", "BCN")
-        val passenger2 = Passenger("Benjamin", "MAD")
-        //val passenger3 = Passenger("Ruben", "LHR")
-        //val passenger4 = Passenger("Marc", "CDG")
-        //val brothers = arrayOf(passenger1, passenger2, passenger3, passenger4)
-        val brothers = arrayOf(passenger1, passenger2)
-        val travelGroup1 = TravelGroup("Brothers", brothers)
+        // Default Travel Group
+        fromText.text = defaultTravelGroup.name
+        amountOfPeopleText.text = "${defaultTravelGroup.passengers.size} PEOPLE"
 
-        fromTextId.text = travelGroup1.name
-        amountOfPeopleTextId.text = "${travelGroup1.passengers.size} PEOPLE"
+        fromText.setOnClickListener {
+            showTravelGroupPicker()
+        }
 
         // Set calendar pickers
         val cal = Calendar.getInstance()
@@ -128,7 +155,7 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
                 val returnOn = arrivalDate.text.toString()
                 val requestFlights = mutableListOf<RequestFlight>()
 
-                for (passenger in travelGroup1.passengers) {
+                for (passenger in defaultTravelGroup.passengers) {
                     requestFlights.add(
                         RequestFlight(passenger.departure, to, departOn, returnOn, true)
                     )
@@ -136,6 +163,34 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
                 mainPresenter.onUserClickedSearchFlights(requestFlights.toTypedArray())
             }
         }
+    }
+
+    private fun showTravelGroupPicker() {
+        // Setup the alert builder
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Choose a travel group")
+
+        // Set desired travel group
+        builder.setItems(availableTravelGroupsNames) { dialog, which ->
+            when (which) {
+                0 -> {
+                    defaultTravelGroup = brothersTravelGroup
+
+                }
+                1 -> {
+                    defaultTravelGroup = friendsTravelGroup
+                }
+                2 -> {
+                    defaultTravelGroup = workTravelGroup
+                }
+            }
+            fromText.text = defaultTravelGroup.name
+            amountOfPeopleText.text = "${defaultTravelGroup.passengers.size} PEOPLE"
+        }
+
+        // create and show the alert dialog
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun onDestroy() {
