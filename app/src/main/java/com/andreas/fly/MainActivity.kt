@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.andreas.fly.Constants.Companion.INTENT_FLIGHTS_KEY
 import com.andreas.fly.model.*
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
 
     private lateinit var mainPresenter: MainPresenter
     private lateinit var airportCityAdapter: ArrayAdapter<String>
+    private lateinit var destinationText: TextView
+    private lateinit var departureDate: TextView
+    private lateinit var arrivalDate: TextView
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -48,15 +52,23 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
         mainPresenter.onViewAttached(this)
 
         val retrofitCall: Button = searchButton
+        destinationText = destinationTextId
+        departureDate = departureDateId
+        arrivalDate = arrivalDateId
 
         // Mock TravelGroup
         val passenger1 = Passenger("Andreas", "BCN")
         val passenger2 = Passenger("Benjamin", "MAD")
-        val passenger3 = Passenger("Ruben", "LHR")
-        val passenger4 = Passenger("Marc", "CDG")
-        val brothers = arrayOf(passenger1, passenger2, passenger3, passenger4)
+        //val passenger3 = Passenger("Ruben", "LHR")
+        //val passenger4 = Passenger("Marc", "CDG")
+        //val brothers = arrayOf(passenger1, passenger2, passenger3, passenger4)
+        val brothers = arrayOf(passenger1, passenger2)
         val travelGroup1 = TravelGroup("Brothers", brothers)
 
+        fromTextId.text = travelGroup1.name
+        amountOfPeopleTextId.text = "${travelGroup1.passengers.size} PEOPLE"
+
+        // Set calendar pickers
         val cal = Calendar.getInstance()
 
         val departureSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -66,7 +78,7 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
 
             val myFormat = "yyyy-MM-dd"
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            departureDateId.text = sdf.format(cal.time)
+            departureDate.text = sdf.format(cal.time)
         }
 
         val arrivalSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -76,18 +88,18 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
 
             val myFormat = "yyyy-MM-dd"
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            arrivalDateId.text = sdf.format(cal.time)
+            arrivalDate.text = sdf.format(cal.time)
 
         }
 
-        departureDateId.setOnClickListener {
+        departureDate.setOnClickListener {
             DatePickerDialog(this@MainActivity, departureSetListener,
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        arrivalDateId.setOnClickListener {
+        arrivalDate.setOnClickListener {
             DatePickerDialog(this@MainActivity, arrivalSetListener,
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
@@ -104,13 +116,13 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
         // Set default value
         val defaultArrivalAirportPos = airportCityAdapter.getPosition("New York")
         arrivalSpinner.setSelection(defaultArrivalAirportPos)
-        destinationTextId.text = getIataCodeFor("New York")
+        destinationText.text = getIataCodeFor("New York")
 
         retrofitCall.setOnClickListener {
             GlobalScope.launch {
-                val to = "JFK"
-                val departOn = "2019-11-15"
-                val returnOn = "2019-11-25"
+                val to = destinationText.text.toString()
+                val departOn = departureDate.text.toString()
+                val returnOn = arrivalDate.text.toString()
                 val requestFlights = mutableListOf<RequestFlight>()
 
                 for (passenger in travelGroup1.passengers) {
@@ -130,11 +142,11 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.e(LOG_TAG, "Nothing selected")
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        destinationTextId.text = getIataCodeFor(airportCityAdapter.getItem(p2)!!)
+        destinationText.text = getIataCodeFor(airportCityAdapter.getItem(p2)!!)
     }
 
     override fun showFlightFoundSuccess(service: Service) {
