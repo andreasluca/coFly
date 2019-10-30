@@ -3,7 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="header">#8cc6da</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#008577</color>
     <color name="colorSearch">#53a99c</color>
     <color name="colorIdaVueltaBackground">#53a99c</color>
     <color name="flightsBox">#fff</color>

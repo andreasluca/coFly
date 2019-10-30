@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.andreas.fly.Constants.Companion.INTENT_FLIGHTS_KEY
 import com.andreas.fly.model.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -222,11 +223,25 @@ class MainActivity : AppCompatActivity(), SearchFlightsViewInterface, AdapterVie
     override fun showFlightsNotFoundFailure() {
         busyDialog.dismiss()
         Log.d(LOG_TAG, "NOT FOUND!!!!!!!!!!!!!")
+        GlobalScope.launch(Dispatchers.Main) {
+            showFailureDialog()
+        }
     }
 
     override fun showUnexpectedError() {
         busyDialog.dismiss()
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        showFailureDialog()
+    }
+
+    private fun showFailureDialog() {
+        busyDialog.dismiss()
+        AlertDialog.Builder(this).apply {
+            setTitle("Error")
+            setMessage("An error occurred while searching for the flights.")
+            setPositiveButton(
+                "Ok"
+            ) { _, _ -> }
+        }.show()
     }
 
     private fun startFlightsActivity(services: ArrayList<Service>) {
